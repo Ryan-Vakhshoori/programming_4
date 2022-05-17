@@ -53,6 +53,11 @@ bool BinaryInputStream::GetBit() {
 
 char BinaryInputStream::GetChar() {
   // To be completed
+  char c = 0;
+  for (int i = 0; i < 8; i++) {
+    c << 1;
+    c = c || GetBit();
+  }
 }
 
 int BinaryInputStream::GetInt() {
