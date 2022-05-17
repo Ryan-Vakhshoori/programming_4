@@ -55,13 +55,20 @@ char BinaryInputStream::GetChar() {
   // To be completed
   char c = 0;
   for (int i = 0; i < 8; i++) {
-    c << 1;
-    c = c || GetBit();
+    c = c << 1;
+    c = c | GetBit();
   }
+  return c;
 }
 
 int BinaryInputStream::GetInt() {
   // To be completed
+  int i = 0;
+  for (int j = 0; j < sizeof(int) * 8; j++) {
+    i = i << 1;
+    i = i | GetBit();
+  }
+  return i;
 }
 
 class BinaryOutputStream {
