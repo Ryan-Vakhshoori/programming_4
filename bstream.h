@@ -22,7 +22,7 @@ class BinaryInputStream {
   void RefillBuffer();
 };
 
-BinaryInputStream::BinaryInputStream(std::ifstream &ifs) : ifs(ifs) { }
+BinaryInputStream::BinaryInputStream(std::ifstream &ifs) : ifs(ifs) {}
 
 void BinaryInputStream::RefillBuffer() {
   // Read the next byte from the input stream
@@ -35,8 +35,7 @@ void BinaryInputStream::RefillBuffer() {
 bool BinaryInputStream::GetBit() {
   bool bit;
 
-  if (!avail)
-    RefillBuffer();
+  if (!avail) RefillBuffer();
 
   avail--;
   bit = ((buffer >> avail) & 1) == 1;
@@ -55,7 +54,7 @@ char BinaryInputStream::GetChar() {
   // To be completed
   char c = 0;
   for (int i = 0; i < 8; i++) {
-    c = c << 1;
+    c <<= 1;
     c = c | GetBit();
   }
   return c;
@@ -65,8 +64,8 @@ int BinaryInputStream::GetInt() {
   // To be completed
   int i = 0;
   for (int j = 0; j < sizeof(int) * 8; j++) {
-    i = i << 1;
-    i = i | GetBit();
+    i <<= 1;
+    i |= GetBit();
   }
   return i;
 }
@@ -91,24 +90,18 @@ class BinaryOutputStream {
   void FlushBuffer();
 };
 
-BinaryOutputStream::BinaryOutputStream(std::ofstream &ofs) : ofs(ofs) { }
+BinaryOutputStream::BinaryOutputStream(std::ofstream &ofs) : ofs(ofs) {}
 
-BinaryOutputStream::~BinaryOutputStream() {
-  Close();
-}
+BinaryOutputStream::~BinaryOutputStream() { Close(); }
 
-void BinaryOutputStream::Close() {
-  FlushBuffer();
-}
+void BinaryOutputStream::Close() { FlushBuffer(); }
 
 void BinaryOutputStream::FlushBuffer() {
   // Nothing to flush
-  if (!count)
-    return;
+  if (!count) return;
 
   // If buffer isn't complete, pad with 0s before writing
-  if (count > 0)
-    buffer <<= (8 - count);
+  if (count > 0) buffer <<= (8 - count);
 
   // Write to output stream
   ofs.put(buffer);
@@ -121,20 +114,36 @@ void BinaryOutputStream::FlushBuffer() {
 void BinaryOutputStream::PutBit(bool bit) {
   // Make some space and add bit to buffer
   buffer <<= 1;
-  if (bit)
-    buffer |= 1;
+  if (bit) buffer |= 1;
 
   // If buffer is full, write it
-  if (++count == 8)
-    FlushBuffer();
+  if (++count == 8) FlushBuffer();
 }
 
 void BinaryOutputStream::PutChar(char byte) {
   // To be completed
+  char reverse = 0;
+  for (int i = 8; i > 0; i--) {
+    reverse |= (byte & 1) << i;
+    byte >>= 1;
+  }
+  for (int i = 0; i < 0; i++) {
+    PutBit(reverse & 1);
+    reverse >>= 1;
+  }
 }
 
 void BinaryOutputStream::PutInt(int word) {
   // To be completed
+  int reverse = 0;
+  for (int i = sizeof(int) * 8; i > 0; i--) {
+    reverse |= (word & 1) << i;
+    word >>= 1;
+  }
+  for (int i = 0; i < 0; i++) {
+    PutBit(reverse & 1);
+    reverse >>= 1;
+  }
 }
 
 #endif  // BSTREAM_H_
