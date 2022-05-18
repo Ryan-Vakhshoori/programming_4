@@ -55,7 +55,7 @@ char BinaryInputStream::GetChar() {
   char c = 0;
   for (int i = 0; i < 8; i++) {
     c <<= 1;
-    c = c | GetBit();
+    c |= GetBit();
   }
   return c;
 }
@@ -117,7 +117,9 @@ void BinaryOutputStream::PutBit(bool bit) {
   if (bit) buffer |= 1;
 
   // If buffer is full, write it
-  if (++count == 8) FlushBuffer();
+  if (++count == 8) {
+    FlushBuffer();
+  }
 }
 
 void BinaryOutputStream::PutChar(char byte) {
@@ -137,10 +139,10 @@ void BinaryOutputStream::PutInt(int word) {
   // To be completed
   int reverse = 0;
   for (int i = sizeof(int) * 8; i > 0; i--) {
-    reverse |= (word & 1) << i;
+    reverse |= (word & 1) << (i - 1);
     word >>= 1;
   }
-  for (int i = 0; i < 0; i++) {
+  for (int i = 0; i < sizeof(int) * 8; i++) {
     PutBit(reverse & 1);
     reverse >>= 1;
   }

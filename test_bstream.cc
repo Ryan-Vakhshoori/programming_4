@@ -58,7 +58,7 @@ TEST(Bstream, output) {
 
   ofs.close();
 
-  unsigned char val[8];
+  unsigned char val[11];
   std::ifstream ifs(filename, std::ios::in |
                     std::ios::binary);
   ifs.read(reinterpret_cast<char *>(val), sizeof(val));
@@ -73,6 +73,10 @@ TEST(Bstream, output) {
   EXPECT_EQ(val[4], 0x4e);
   EXPECT_EQ(val[5], 0xdb);
   EXPECT_EQ(val[6], 0x40);
+  EXPECT_EQ(val[7], 0x58);
+  EXPECT_EQ(val[8], 0x40);
+  EXPECT_EQ(val[9], 0x02);
+  EXPECT_EQ(val[10], 0x76);
 }
 
 int main(int argc, char *argv[]) {
