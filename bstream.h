@@ -124,10 +124,10 @@ void BinaryOutputStream::PutChar(char byte) {
   // To be completed
   char reverse = 0;
   for (int i = 8; i > 0; i--) {
-    reverse |= (byte & 1) << i;
+    reverse |= (byte & 1) << (i - 1);
     byte >>= 1;
   }
-  for (int i = 0; i < 0; i++) {
+  for (int i = 0; i < 8; i++) {
     PutBit(reverse & 1);
     reverse >>= 1;
   }

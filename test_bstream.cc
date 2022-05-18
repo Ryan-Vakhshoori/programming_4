@@ -39,18 +39,24 @@ TEST(BStream, input) {
 }
 
 TEST(Bstream, output) {
-  std::string filename{"test_bstream_input"};
-
-  // const unsigned char val[] = {
-  //     0x58, 0x90, 0xab, 0x08, 0x00, 0x4e, 0xdb, 0x40,
-  // };
+  std::string filename{"test_bstream_output"};
 
   std::ofstream ofs(filename,
                     std::ios::out | std::ios::trunc | std::ios::binary);
 
   BinaryOutputStream bos(ofs);
 
-  bos.PutBit(1);
+ // 0x90, 0xab, 0x08, 0x00, 0x4e, 0xdb, 0x40,
+  bos.PutChar(0x58);
+  bos.PutChar(0xab);
+  bos.PutChar(0x08);
+  bos.PutChar(0x00);
+  bos.PutChar(0x4e);
+  bos.PutChar(0xdb);
+  bos.PutChar(0x40);
+  bos.PutInt(0x58400276);
+
+  ofs.close();
 
   unsigned char val[8];
   std::ifstream ifs(filename, std::ios::in |
@@ -58,7 +64,15 @@ TEST(Bstream, output) {
   ifs.read(reinterpret_cast<char *>(val), sizeof(val));
   ifs.close();
 
-  EXPECT_EQ(val[0], 0x01);
+  std::remove(filename.c_str());
+
+  EXPECT_EQ(val[0], 0x58);
+  EXPECT_EQ(val[1], 0xab);
+  EXPECT_EQ(val[2], 0x08);
+  EXPECT_EQ(val[3], 0x00);
+  EXPECT_EQ(val[4], 0x4e);
+  EXPECT_EQ(val[5], 0xdb);
+  EXPECT_EQ(val[6], 0x40);
 }
 
 int main(int argc, char *argv[]) {
