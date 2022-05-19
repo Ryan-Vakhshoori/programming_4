@@ -54,6 +54,8 @@ class Huffman {
 // To be completed below
 
 void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
+  BinaryInputStream bis(ifs);
+  BinaryOutputStream bos(ofs);
   std::string s;
   while (ifs >> s) {
     s += ' ';
@@ -76,6 +78,22 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
     nodes.Push(new Huffman(0, node1->freq() + node2->freq(), node1, node2));
   }
   HuffmanNode *root = nodes.Top();
+  std::stack<HuffmanNode*> stack;
+  stack.push(root);
+  while (!stack.empty()) {
+    HuffmanNode *n = stack.top();
+    if (n->IsLeaf()) {
+      bos.PutBit(1);
+      bos.PutChar(n->data());
+    } else {
+      bos.PutBit(0);
+    }
+    stack.pop();
+    if (n->right)
+      stack.push(n->right.get());
+    if (n->left)
+      stack.push(n->left.get());
+  }
 }
 
 void Huffman::Decompress(std::ifstream &ifs, std::ofstream &ofs) {
