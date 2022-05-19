@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <map>
 
 #include "bstream.h"
 #include "pqueue.h"
@@ -89,11 +90,12 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
       bos.PutBit(0);
     }
     stack.pop();
-    if (n->right)
-      stack.push(n->right.get());
-    if (n->left)
-      stack.push(n->left.get());
+    if (n->right())
+      stack.push(n->right());
+    if (n->left())
+      stack.push(n->left());
   }
+  std::map<char, std::string> codes;
 }
 
 void Huffman::Decompress(std::ifstream &ifs, std::ofstream &ofs) {
