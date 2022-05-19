@@ -48,7 +48,7 @@ class Huffman {
   static void Decompress(std::ifstream &ifs, std::ofstream &ofs);
 
  private:
-  // HuffmanNode* Reconstruction(std::ifstream &ifs, HuffmanNode* n);
+  HuffmanNode* Reconstruction(std::ifstream &ifs);
 };
 
 // To be completed below
@@ -62,31 +62,22 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   std::cout << s << std::endl;
   std::stringstream ss(s);
   std::string word;
+  // should be priority queue
   std::vector<HuffmanNode *> nodes;
   while (ss >> word) {
     nodes.push_back(new HuffmanNode(word[0], word.size()));
   }
   HuffmanNode *root = nullptr;
+  // nodes.Top();
+  // nodes.Pop();
+  // nodes.Top
 }
 
 void Huffman::Decompress(std::ifstream &ifs, std::ofstream &ofs) {
   // reading the Huffman tree
   BinaryInputStream bis(ifs);
   BinaryOutputStream bos(ofs);
-  // int depth = 0;
-  // std::vector<char> c;
-  // while (bis.GetBit() == 0) {
-  //   depth++;
-  // }
-  // do {
-  //   c.push_back(bis.GetChar());
-  // } while (depth-- && bis.GetBit() == 1);
-  // HuffmanNode root();
-  // for (int i = 0; i < c.size(); i++) {
-  //   std::cout << c[i] << std::endl;
-  // }
-
-  // Assume that reading works:
+  HuffmanNode *root = Reconstruction(ifs);
   int size = bis.GetInt();
   for (int i = 0; i < size; i++) {
     HuffmanNode *n = root;
@@ -100,11 +91,16 @@ void Huffman::Decompress(std::ifstream &ifs, std::ofstream &ofs) {
   }
 }
 
-// HuffmanNode* Huffman::Reconstruction(std::ifstream &ifs, HuffmanNode* n) {
-//   BinaryInputStream bis(ifs);
-//   if (bis.GetBit() == 0) {
-//     n->left_ = HuffmanNode;
-//   }
-// }
+HuffmanNode* Huffman::Reconstruction(std::ifstream &ifs) {
+  BinaryInputStream bis(ifs);
+  if (bis.GetBit() == 0) {
+    HuffmanNode *left = Reconstruction(ifs);
+    HuffmanNode *right = Reconstruction(ifs);
+    HuffmanNode *n = new HuffmanNode(0, 0, left, right);
+  }
+  return new HuffmanNode(bis.GetChar(), 0, nullptr, nullptr);
+}
+
+// 00101000011101000010101000001000
 
 #endif  // HUFFMAN_H_
