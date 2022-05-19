@@ -71,7 +71,8 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
 
 void Huffman::Decompress(std::ifstream &ifs, std::ofstream &ofs) {
   // reading the Huffman tree
-  // BinaryInputStream bis(ifs);
+  BinaryInputStream bis(ifs);
+  BinaryOutputStream bos(ofs);
   // int depth = 0;
   // std::vector<char> c;
   // while (bis.GetBit() == 0) {
@@ -84,7 +85,19 @@ void Huffman::Decompress(std::ifstream &ifs, std::ofstream &ofs) {
   // for (int i = 0; i < c.size(); i++) {
   //   std::cout << c[i] << std::endl;
   // }
-  
+
+  // Assume that reading works:
+  int size = bis.GetInt();
+  for (int i = 0; i < size; i++) {
+    HuffmanNode *n = root;
+    while (!n->IsLeaf()) {
+      if (bis.GetBit() == 1)
+        n = n->right();
+      else if (bis.GetBit() == 0)
+        n = n->left();
+    }
+    bos.PutChar(n->data());
+  }
 }
 
 // HuffmanNode* Huffman::Reconstruction(std::ifstream &ifs, HuffmanNode* n) {
