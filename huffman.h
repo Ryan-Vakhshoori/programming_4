@@ -53,29 +53,30 @@ class Huffman {
 
 // To be completed below
 
-// void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
-//   std::string s;
-//   while (ifs >> s) {
-//     s += ' ';
-//   }
-//   s.pop_back();
-//   std::cout << s << std::endl;
-//   std::stringstream ss(s);
-//   std::string word;
-//   // should be priority queue
-//   std::vector<HuffmanNode *> nodes;
-//   while (ss >> word) {
-//     nodes.push_back(new HuffmanNode(word[0], word.size()));
-//   }
-//   HuffmanNode *root, *node1, *node2 = nullptr;
-//   while (nodes.Size() != 1) {
-//     HuffmanNode *node1 = nodes.Top();
-//     nodes.Pop();
-//     HuffmanNode *node2 = nodes.Top();
-//     nodes.Pop();
-//     nodes.Push(0, node1->data() + node2->data())
-//   }
-// }
+void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
+  std::string s;
+  while (ifs >> s) {
+    s += ' ';
+  }
+  s.pop_back();
+  std::cout << s << std::endl;
+  std::stringstream ss(s);
+  std::string word;
+  // should be priority queue
+  std::vector<HuffmanNode *> nodes;
+  while (ss >> word) {
+    nodes.push_back(new HuffmanNode(word[0], word.size()));
+  }
+  HuffmanNode *node1, *node2 = nullptr;
+  while (nodes.Size() != 1) {
+    node1 = nodes.Top();
+    nodes.Pop();
+    node2 = nodes.Top();
+    nodes.Pop();
+    nodes.Push(new Huffman(0, node1->freq() + node2->freq(), node1, node2));
+  }
+  HuffmanNode *root = nodes.Top();
+}
 
 void Huffman::Decompress(std::ifstream &ifs, std::ofstream &ofs) {
   // reading the Huffman tree

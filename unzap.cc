@@ -17,4 +17,5 @@ int main(int argc, char* argv[]) {
                     std::ios::out | std::ios::trunc | std::ios::binary);
   test.Decompress(ifs, ofs1);
   ofs1.close();
+  std::remove(filename.c_str());
 }
