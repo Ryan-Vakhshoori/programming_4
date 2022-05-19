@@ -2,8 +2,8 @@
 #define HUFFMAN_H_
 
 #include <array>
-#include <cstddef>
 #include <cctype>
+#include <cstddef>
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -14,29 +14,26 @@
 
 class HuffmanNode {
  public:
-  explicit HuffmanNode(char ch, size_t freq,
-                       HuffmanNode *left = nullptr,
+  explicit HuffmanNode(char ch, size_t freq, HuffmanNode *left = nullptr,
                        HuffmanNode *right = nullptr)
-      : ch_(ch), freq_(freq), left_(left), right_(right) { }
-
+      : ch_(ch), freq_(freq), left_(left), right_(right) {}
 
   bool IsLeaf() {
     // Node is a leaf if it doesn't have any children
     return left_ == nullptr && right_ == nullptr;
   }
 
-  bool operator < (const HuffmanNode &n) const {
+  bool operator<(const HuffmanNode &n) const {
     // In case of equality, make it deterministic based on character
-    if (freq_ == n.freq_)
-      return ch_ < n.ch_;
+    if (freq_ == n.freq_) return ch_ < n.ch_;
     // Otherwise compare frequencies
     return freq_ < n.freq_;
   }
 
   size_t freq() { return freq_; }
   size_t data() { return ch_; }
-  HuffmanNode* left() { return left_; }
-  HuffmanNode* right() { return right_; }
+  HuffmanNode *left() { return left_; }
+  HuffmanNode *right() { return right_; }
 
  private:
   char ch_;
@@ -56,8 +53,6 @@ class Huffman {
 
 // To be completed below
 
-
-
 void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   std::string s;
   while (ifs >> s) {
@@ -67,13 +62,11 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   std::cout << s << std::endl;
   std::stringstream ss(s);
   std::string word;
-  std::vector<HuffmanNode*> nodes;
+  std::vector<HuffmanNode *> nodes;
   while (ss >> word) {
     nodes.push_back(new HuffmanNode(word[0], word.size()));
   }
-  HuffmanNode* root = nullptr;
-  
+  HuffmanNode *root = nullptr;
 }
-
 
 #endif  // HUFFMAN_H_

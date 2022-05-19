@@ -46,7 +46,7 @@ TEST(Bstream, output) {
 
   BinaryOutputStream bos(ofs);
 
- // 0x90, 0xab, 0x08, 0x00, 0x4e, 0xdb, 0x40,
+  // 0x90, 0xab, 0x08, 0x00, 0x4e, 0xdb, 0x40,
   bos.PutChar(0x58);
   bos.PutChar(0xab);
   bos.PutChar(0x08);
@@ -59,8 +59,7 @@ TEST(Bstream, output) {
   ofs.close();
 
   unsigned char val[11];
-  std::ifstream ifs(filename, std::ios::in |
-                    std::ios::binary);
+  std::ifstream ifs(filename, std::ios::in | std::ios::binary);
   ifs.read(reinterpret_cast<char *>(val), sizeof(val));
   ifs.close();
 

@@ -69,17 +69,15 @@ TEST(PQueue, greater_equal) {
   EXPECT_EQ(pq.Top(), 55);
 }
 
-
-
 class MyClass {
  public:
   explicit MyClass(int n) : n_(n) {}
-  bool operator < (const MyClass &mc) const { return n_ < mc.n_; }
+  bool operator<(const MyClass &mc) const { return n_ < mc.n_; }
   int n() { return n_; }
+
  private:
   int n_;
 };
-
 
 TEST(PQueue, custom_class) {
   std::vector<MyClass> vec{MyClass(42), MyClass(23), MyClass(2), MyClass(34)};
@@ -100,16 +98,18 @@ TEST(PQueue, custom_class) {
 class MyClassGreater {
  public:
   explicit MyClassGreater(int n) : n_(n) {}
-  bool operator < (const MyClassGreater &mc) const { return mc.n_ > n_; }
+  bool operator<(const MyClassGreater &mc) const { return mc.n_ > n_; }
   int n() { return n_; }
+
  private:
   int n_;
 };
 
 // test that uses MyClassGreater comparator
 TEST(PQueue, custom_class_for_max_heap) {
-  std::vector<MyClassGreater> vec{MyClassGreater(42), MyClassGreater(23), MyClassGreater(2),
-  MyClassGreater(34), MyClassGreater(15), MyClassGreater(1)};
+  std::vector<MyClassGreater> vec{MyClassGreater(42), MyClassGreater(23),
+                                  MyClassGreater(2),  MyClassGreater(34),
+                                  MyClassGreater(15), MyClassGreater(1)};
 
   PQueue<MyClassGreater> pq;
   pq.Push(vec[0]);
