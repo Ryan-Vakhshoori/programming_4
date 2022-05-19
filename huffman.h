@@ -48,7 +48,7 @@ class Huffman {
   static void Decompress(std::ifstream &ifs, std::ofstream &ofs);
 
  private:
-  HuffmanNode* Reconstruction(std::ifstream &ifs);
+  static HuffmanNode* Reconstruction(std::ifstream &ifs);
 };
 
 // To be completed below
@@ -67,10 +67,14 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   while (ss >> word) {
     nodes.push_back(new HuffmanNode(word[0], word.size()));
   }
-  HuffmanNode *root = nullptr;
-  // nodes.Top();
-  // nodes.Pop();
-  // nodes.Top
+  HuffmanNode *root, *node1, *node2 = nullptr;
+  while (nodes.Size() != 1) {
+    HuffmanNode *node1 = nodes.Top();
+    nodes.Pop();
+    HuffmanNode *node2 = nodes.Top();
+    nodes.Pop();
+    nodes.Push(0, node1->data() + node2->data())
+  }
 }
 
 void Huffman::Decompress(std::ifstream &ifs, std::ofstream &ofs) {
@@ -96,7 +100,7 @@ HuffmanNode* Huffman::Reconstruction(std::ifstream &ifs) {
   if (bis.GetBit() == 0) {
     HuffmanNode *left = Reconstruction(ifs);
     HuffmanNode *right = Reconstruction(ifs);
-    HuffmanNode *n = new HuffmanNode(0, 0, left, right);
+    return new HuffmanNode(0, 0, left, right);
   }
   return new HuffmanNode(bis.GetChar(), 0, nullptr, nullptr);
 }
