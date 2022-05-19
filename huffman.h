@@ -48,7 +48,7 @@ class Huffman {
   static void Decompress(std::ifstream &ifs, std::ofstream &ofs);
 
  private:
-  // Helper methods...
+  // HuffmanNode* Reconstruction(std::ifstream &ifs, HuffmanNode* n);
 };
 
 // To be completed below
@@ -68,5 +68,30 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   }
   HuffmanNode *root = nullptr;
 }
+
+void Huffman::Decompress(std::ifstream &ifs, std::ofstream &ofs) {
+  // reading the Huffman tree
+  // BinaryInputStream bis(ifs);
+  // int depth = 0;
+  // std::vector<char> c;
+  // while (bis.GetBit() == 0) {
+  //   depth++;
+  // }
+  // do {
+  //   c.push_back(bis.GetChar());
+  // } while (depth-- && bis.GetBit() == 1);
+  // HuffmanNode root();
+  // for (int i = 0; i < c.size(); i++) {
+  //   std::cout << c[i] << std::endl;
+  // }
+  
+}
+
+// HuffmanNode* Huffman::Reconstruction(std::ifstream &ifs, HuffmanNode* n) {
+//   BinaryInputStream bis(ifs);
+//   if (bis.GetBit() == 0) {
+//     n->left_ = HuffmanNode;
+//   }
+// }
 
 #endif  // HUFFMAN_H_
