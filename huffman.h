@@ -56,4 +56,24 @@ class Huffman {
 
 // To be completed below
 
+
+
+void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
+  std::string s;
+  while (ifs >> s) {
+    s += ' ';
+  }
+  s.pop_back();
+  std::cout << s << std::endl;
+  std::stringstream ss(s);
+  std::string word;
+  std::vector<HuffmanNode*> nodes;
+  while (ss >> word) {
+    nodes.push_back(new HuffmanNode(word[0], word.size()));
+  }
+  HuffmanNode* root = nullptr;
+  
+}
+
+
 #endif  // HUFFMAN_H_
