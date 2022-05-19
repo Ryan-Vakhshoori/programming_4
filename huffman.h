@@ -95,7 +95,23 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
     if (n->left())
       stack.push(n->left());
   }
-  std::map<char, std::string> codes;
+  std::map<char, std::string> code_table;
+  std::stack<HuffmanNode*> stack;
+  stack.push(root);
+  while (!stack.empty()) {
+    std::string code;
+    HuffmanNode *n = stack.top();
+    if (n->IsLeaf())
+      code_table[n->data()] = code;
+    stack.pop();
+    if (n->right()) {
+      code += "1";
+      stack.push(n->right());
+    }
+    if (n->left()) {
+      code += "0";
+      stack.push(n->left());
+  }
 }
 
 void Huffman::Decompress(std::ifstream &ifs, std::ofstream &ofs) {
