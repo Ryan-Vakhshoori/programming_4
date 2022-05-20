@@ -50,6 +50,9 @@ class Huffman {
 
  private:
   static HuffmanNode *Reconstruction(BinaryInputStream &bis);
+  static void BuildTable(HuffmanNode *node, std::string s,
+                                  std::map<char, std::string> &code_table,
+                                  int i);
 };
 
 // To be completed below
@@ -66,6 +69,7 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   std::map<char, int> freq;
   std::string text = std::string((std::istreambuf_iterator<char>(ifs)),
                                  std::istreambuf_iterator<char>());
+
   for (char c : text) {
     freq[c]++;
   }
@@ -74,7 +78,7 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
        it++) {
     nodes.Push(new HuffmanNode(it->first, it->second, nullptr, nullptr));
   }
-  int size = nodes.Size();
+  int size = text.length();
   HuffmanNode *node1, *node2 = nullptr;
   while (nodes.Size() != 1) {
     node1 = nodes.Top();
@@ -98,29 +102,45 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
     if (n->right()) stack.push(n->right());
     if (n->left()) stack.push(n->left());
   }
+  bos.PutInt(size);
   std::map<char, std::string> code_table;
-  std::stack<HuffmanNode *> stack_;
-  stack_.push(root);
-  while (!stack_.empty()) {
-    std::string code;
-    HuffmanNode *n = stack_.top();
-    if (n->IsLeaf()) code_table[n->data()] = code;
-    stack_.pop();
-    if (n->right()) {
-      code += "1";
-      stack_.push(n->right());
-    }
-    if (n->left()) {
-      code += "0";
-      stack_.push(n->left());
-    }
-    bos.PutInt(size);
+  std::string s;
+  BuildTable(root, s, code_table, 0);
+  for (std::map<char, std::string>::iterator it = code_table.begin();
+       it != code_table.end(); it++) {
+    std::cout << it->first << " " << it->second << std::endl;
   }
   for (char c : text) {
     for (char c : code_table[c]) {
-      if (c == '0') bos.PutBit(0);
-      bos.PutBit(1);
+      if (c == '0') {
+        bos.PutBit(0);
+      } else {
+        bos.PutBit(1);
+      }
     }
+  }
+}
+
+void Huffman::BuildTable(HuffmanNode *node, std::string s,
+                         std::map<char, std::string> &code_table, int i) {
+  if (node->left()) {
+    if (i == s.length()) {
+      s += '0';
+    } else {
+      s[i] = '0';
+    }
+    BuildTable(node->left(), s, code_table, i + 1);
+  }
+  if (node->right()) {
+    if (i == s.length()) {
+      s += '1';
+    } else {
+      s[i] = '1';
+    }
+    BuildTable(node->right(), s, code_table, i + 1);
+  }
+  if (node->IsLeaf()) {
+    code_table[node->data()] = s;
   }
 }
 

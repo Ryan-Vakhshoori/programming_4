@@ -78,6 +78,28 @@ TEST(Bstream, output) {
   EXPECT_EQ(val[10], 0x76);
 }
 
+TEST(BStream, input2) {
+  std::string filename{"test_bstream_input"};
+
+  std::ofstream ofs(filename,
+                    std::ios::out | std::ios::trunc | std::ios::binary);
+  BinaryOutputStream bos(ofs);
+  bos.PutChar(0x58);
+  ofs.close();
+
+  // Read it back in binary format
+  std::ifstream ifs(filename, std::ios::in | std::ios::binary);
+  BinaryInputStream bis(ifs);
+
+  // Make sure that we reading the binary in the correct order
+  EXPECT_EQ(bis.GetChar(), 0x58);
+  EXPECT_THROW(bis.GetBit(), std::exception);
+
+  ifs.close();
+
+  std::remove(filename.c_str());
+}
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
