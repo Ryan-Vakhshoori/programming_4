@@ -125,12 +125,17 @@ TEST(PQueue, custom_class_for_max_heap) {
   EXPECT_EQ(pq.Top().n(), vec[2].n());
 }
 
-/*
-TEST(PQueue, custom_class_pointer) {
-  std::vector<MyClass*> vec{new MyClass(42), new MyClass(23),
-                            new MyClass(2), new MyClass(34)};
+struct MyClassPtr {
+  bool operator()(MyClass *r, MyClass *s) const {
+    return r->n() < s->n();
+  }
+};
 
-  PQueue<MyClass*, /> pq;
+TEST(PQueue, custom_class_pointer) {
+  std::vector<MyClass *> vec{new MyClass(42), new MyClass(23), new MyClass(2),
+                             new MyClass(34)};
+
+  PQueue<MyClass *, MyClassPtr> pq;
   pq.Push(vec[0]);
   pq.Push(vec[1]);
   pq.Push(vec[2]);
@@ -141,7 +146,7 @@ TEST(PQueue, custom_class_pointer) {
   pq.Pop();
   EXPECT_EQ(pq.Top(), vec[1]);
 }
-*/
+
 int main(int argc, char *argv[]) {
   ::testing::InitGoogleTest(&argc, argv);
   return RUN_ALL_TESTS();
