@@ -62,21 +62,23 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   for (char c : text) {
     freq[c]++;
   }
-  for (std::map<char, int>::iterator it = freq.begin(); it != freq.end();
-       it++) {
-    std::cout << it->first << ": " << it->second << std::endl;
-  }
   PQueue<HuffmanNode *> nodes;
   for (std::map<char, int>::iterator it = freq.begin(); it != freq.end();
        it++) {
     nodes.Push(new HuffmanNode(it->first, it->second, nullptr, nullptr));
   }
+  // while (nodes.Size()) {
+  //   std::cout << nodes.Top()->data() << " " << nodes.Top()->freq() << std::endl;
+  //   nodes.Pop();
+  // }
   int size = nodes.Size();
   HuffmanNode *node1, *node2 = nullptr;
   while (nodes.Size() != 1) {
     node1 = nodes.Top();
+    std::cout << node1->data() << " " << node1->freq() << std::endl;
     nodes.Pop();
     node2 = nodes.Top();
+    std::cout << node2->data() << " " << node2->freq() << std::endl;
     nodes.Pop();
     nodes.Push(new HuffmanNode(0, node1->freq() + node2->freq(), node1, node2));
   }
