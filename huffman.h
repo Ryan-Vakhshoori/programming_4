@@ -58,9 +58,9 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   BinaryInputStream bis(ifs);
   BinaryOutputStream bos(ofs);
   std::map<char, int> freq;
-  std::string file = std::string((std::istreambuf_iterator<char>(ifs)),
+  std::string text = std::string((std::istreambuf_iterator<char>(ifs)),
                                  std::istreambuf_iterator<char>());
-  for (char c : file) {
+  for (char c : text) {
     freq[c]++;
   }
   PQueue <HuffmanNode*> nodes;
@@ -108,6 +108,13 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
       stack.push(n->left());
     }
     bos.PutInt(size);
+  }
+  for (char c : text) {
+    for (char c : code_table[c]) {
+      if (c == '0')
+        bos.PutBit(0);
+      bos.PutBit(1);
+    }
   }
 }
 
