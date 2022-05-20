@@ -55,7 +55,6 @@ class Huffman {
 // To be completed below
 
 void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
-  BinaryInputStream bis(ifs);
   BinaryOutputStream bos(ofs);
   std::map<char, int> freq;
   std::string text = std::string((std::istreambuf_iterator<char>(ifs)),
@@ -63,8 +62,9 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   for (char c : text) {
     freq[c]++;
   }
-  PQueue <HuffmanNode*> nodes;
-  for (std::map<char, int>::iterator it = freq.begin(); it != freq.end(); it++) {
+  PQueue<HuffmanNode *> nodes;
+  for (std::map<char, int>::iterator it = freq.begin(); it != freq.end();
+       it++) {
     nodes.Push(new HuffmanNode(it->first, it->second, nullptr, nullptr));
   }
   int size = nodes.Size();
@@ -92,58 +92,57 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
     if (n->left()) stack.push(n->left());
   }
   std::map<char, std::string> code_table;
-  std::stack<HuffmanNode *> stack;
-  stack.push(root);
-  while (!stack.empty()) {
+  std::stack<HuffmanNode *> stack_;
+  stack_.push(root);
+  while (!stack_.empty()) {
     std::string code;
-    HuffmanNode *n = stack.top();
+    HuffmanNode *n = stack_.top();
     if (n->IsLeaf()) code_table[n->data()] = code;
-    stack.pop();
+    stack_.pop();
     if (n->right()) {
       code += "1";
-      stack.push(n->right());
+      stack_.push(n->right());
     }
     if (n->left()) {
       code += "0";
-      stack.push(n->left());
+      stack_.push(n->left());
     }
     bos.PutInt(size);
   }
   for (char c : text) {
     for (char c : code_table[c]) {
-      if (c == '0')
-        bos.PutBit(0);
+      if (c == '0') bos.PutBit(0);
       bos.PutBit(1);
     }
   }
 }
 
-  void Huffman::Decompress(std::ifstream & ifs, std::ofstream & ofs) {
-    // reading the Huffman tree
-    BinaryInputStream bis(ifs);
-    BinaryOutputStream bos(ofs);
-    HuffmanNode *root = Reconstruction(bis);
-    int size = bis.GetInt();
-    for (int i = 0; i < size; i++) {
-      HuffmanNode *n = root;
-      while (!(n->IsLeaf())) {
-        if (bis.GetBit() == 1) {
-          n = n->right();
-        } else {
-          n = n->left();
-        }
+void Huffman::Decompress(std::ifstream &ifs, std::ofstream &ofs) {
+  // reading the Huffman tree
+  BinaryInputStream bis(ifs);
+  BinaryOutputStream bos(ofs);
+  HuffmanNode *root = Reconstruction(bis);
+  int size = bis.GetInt();
+  for (int i = 0; i < size; i++) {
+    HuffmanNode *n = root;
+    while (!(n->IsLeaf())) {
+      if (bis.GetBit() == 1) {
+        n = n->right();
+      } else {
+        n = n->left();
       }
-      bos.PutChar(n->data());
     }
+    bos.PutChar(n->data());
   }
+}
 
-  HuffmanNode *Huffman::Reconstruction(BinaryInputStream & bis) {
-    if (bis.GetBit() == 0) {
-      HuffmanNode *left = Reconstruction(bis);
-      HuffmanNode *right = Reconstruction(bis);
-      return new HuffmanNode(0, 0, left, right);
-    }
-    return new HuffmanNode(bis.GetChar(), 0, nullptr, nullptr);
+HuffmanNode *Huffman::Reconstruction(BinaryInputStream &bis) {
+  if (bis.GetBit() == 0) {
+    HuffmanNode *left = Reconstruction(bis);
+    HuffmanNode *right = Reconstruction(bis);
+    return new HuffmanNode(0, 0, left, right);
   }
+  return new HuffmanNode(bis.GetChar(), 0, nullptr, nullptr);
+}
 
 #endif  // HUFFMAN_H_
