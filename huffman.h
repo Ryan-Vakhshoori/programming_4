@@ -9,6 +9,7 @@
 #include <map>
 #include <sstream>
 #include <string>
+#include <stack>
 
 #include "bstream.h"
 #include "pqueue.h"
@@ -52,7 +53,7 @@ class Huffman {
   static HuffmanNode *Reconstruction(BinaryInputStream &bis);
   static void BuildTable(HuffmanNode *node, std::string s,
                                   std::map<char, std::string> &code_table,
-                                  int i);
+                                  unsigned int i);
 };
 
 // To be completed below
@@ -118,7 +119,7 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
 }
 
 void Huffman::BuildTable(HuffmanNode *node, std::string s,
-                         std::map<char, std::string> &code_table, int i) {
+                         std::map<char, std::string> &code_table, unsigned int i) {
   if (node->left()) {
     if (i == s.length()) {
       s += '0';

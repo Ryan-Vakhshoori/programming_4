@@ -1,13 +1,16 @@
 #include "huffman.h"
 
 int main(int argc, char* argv[]) {
-  std::string filename{"frederick_douglass.txt"};
-  std::ifstream ifs(filename);
-  std::string ofilename{"frederick_douglass.txt.zap"};
-  std::ofstream ofs(ofilename,
+  if (argc != 3) {
+    std::cerr << "Usage: " << argv[0] << " <inputfile> <zapfile>" << std::endl;
+    return 1;
+  }
+  std::ifstream ifs(argv[1]);
+  std::ofstream ofs(argv[2],
                     std::ios::out | std::ios::trunc | std::ios::binary);
   Huffman test;
   test.Compress(ifs, ofs);
   ofs.close();
   ifs.close();
+  return 0;
 }

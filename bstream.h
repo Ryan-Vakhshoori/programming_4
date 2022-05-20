@@ -63,7 +63,7 @@ char BinaryInputStream::GetChar() {
 int BinaryInputStream::GetInt() {
   // To be completed
   int i = 0;
-  for (int j = 0; j < sizeof(int) * 8; j++) {
+  for (unsigned int j = 0; j < sizeof(int) * 8; j++) {
     i <<= 1;
     i |= GetBit();
   }
@@ -142,7 +142,7 @@ void BinaryOutputStream::PutInt(int word) {
     reverse |= (word & 1) << (i - 1);
     word >>= 1;
   }
-  for (int i = 0; i < sizeof(int) * 8; i++) {
+  for (unsigned int i = 0; i < sizeof(int) * 8; i++) {
     PutBit(reverse & 1);
     reverse >>= 1;
   }

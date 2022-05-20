@@ -1,10 +1,10 @@
-all: test_pqueue test_bstream
+all: zap unzap
 
-test_pqueue: test_pqueue.cc 
-	g++ -Wall -Werror -o $@ $< -std=c++11 -pthread -lgtest
+zap: zap.cc huffman.h
+	g++ -Wall -Werror -o $@ $< -std=c++11
 
-test_bstream: test_bstream.cc 
-	g++ -Wall -Werror -o $@ $< -std=c++11 -pthread -lgtest
+unzap: unzap.cc huffman.h
+	g++ -Wall -Werror -o $@ $< -std=c++11
 
 clean:
-	-rm -f test_pqueue test_bstream *.dat
+	-rm -f *.txt *.zap *.unzap zap unzap
