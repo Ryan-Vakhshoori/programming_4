@@ -54,6 +54,13 @@ class Huffman {
 
 // To be completed below
 
+struct HuffmanNodePtr {
+  bool operator()(HuffmanNode *r, HuffmanNode *s) const {
+    if (r->freq() == s->freq()) return r->data() < s->data();
+    return r->freq() < s->freq();
+  }
+};
+
 void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   BinaryOutputStream bos(ofs);
   std::map<char, int> freq;
@@ -62,23 +69,17 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   for (char c : text) {
     freq[c]++;
   }
-  PQueue<HuffmanNode *> nodes;
+  PQueue<HuffmanNode *, HuffmanNodePtr> nodes;
   for (std::map<char, int>::iterator it = freq.begin(); it != freq.end();
        it++) {
     nodes.Push(new HuffmanNode(it->first, it->second, nullptr, nullptr));
   }
-  // while (nodes.Size()) {
-  //   std::cout << nodes.Top()->data() << " " << nodes.Top()->freq() << std::endl;
-  //   nodes.Pop();
-  // }
   int size = nodes.Size();
   HuffmanNode *node1, *node2 = nullptr;
   while (nodes.Size() != 1) {
     node1 = nodes.Top();
-    std::cout << node1->data() << " " << node1->freq() << std::endl;
     nodes.Pop();
     node2 = nodes.Top();
-    std::cout << node2->data() << " " << node2->freq() << std::endl;
     nodes.Pop();
     nodes.Push(new HuffmanNode(0, node1->freq() + node2->freq(), node1, node2));
   }
