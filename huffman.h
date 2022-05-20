@@ -106,10 +106,6 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
   std::map<char, std::string> code_table;
   std::string s;
   BuildTable(root, s, code_table, 0);
-  for (std::map<char, std::string>::iterator it = code_table.begin();
-       it != code_table.end(); it++) {
-    std::cout << it->first << " " << it->second << std::endl;
-  }
   for (char c : text) {
     for (char c : code_table[c]) {
       if (c == '0') {

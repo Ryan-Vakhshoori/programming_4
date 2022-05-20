@@ -3,7 +3,7 @@
 int main(int argc, char* argv[]) {
   std::string filename{"frederick_douglass.txt.zap"};
   std::ifstream ifs(filename, std::ios::in | std::ios::binary);
-  std::string ofilename{"frederick_douglass_test.txt"};
+  std::string ofilename{"frederick_douglass.txt.unzap"};
   std::ofstream ofs(ofilename,
                     std::ios::out | std::ios::trunc | std::ios::binary);
   Huffman unzap;
