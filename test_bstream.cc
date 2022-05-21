@@ -82,6 +82,7 @@ TEST(BStream, out_of_bounds) {
   EXPECT_EQ(bis.GetChar(), 0x58);
   EXPECT_THROW(bis.GetBit(), std::exception);
   ifs.close();
+  std::remove(filename.c_str());
 }
 
 int main(int argc, char *argv[]) {
