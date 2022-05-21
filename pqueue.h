@@ -45,7 +45,6 @@ class PQueue {
 
 // To be completed below
 
-
 #endif  // PQUEUE_H_
 
 // returns size of priority queue
@@ -61,7 +60,7 @@ T& PQueue<T, C>::Top() {
   return items[Root()];
 }
 
-// pops top of priority queue by adding the last item to the root 
+// pops top of priority queue by adding the last item to the root
 // performs percolate down with the next root to maintain heap property
 template <typename T, typename C>
 void PQueue<T, C>::Pop() {
@@ -92,7 +91,7 @@ void PQueue<T, C>::PercolateUp(size_t n) {
 }
 
 // moves item down heap by swapping with child if order is violated
-/* checks whether to swap with left or right child 
+/* checks whether to swap with left or right child
    and then determines if order is violated */
 template <typename T, typename C>
 void PQueue<T, C>::PercolateDown(size_t n) {

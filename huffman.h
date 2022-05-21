@@ -107,7 +107,8 @@ void Huffman::Compress(std::ifstream &ifs, std::ofstream &ofs) {
     nodes.Pop();
     // push new huffman internal node with freq equal to addition with left
     // pointer to node 1 and right pointer to node 2
-    nodes.Push(new HuffmanNode('0', node1->freq() + node2->freq(), node1, node2));
+    nodes.Push(
+        new HuffmanNode('0', node1->freq() + node2->freq(), node1, node2));
   }
   // set root to only huffman node left
   HuffmanNode *root = nodes.Top();
