@@ -40,13 +40,9 @@ TEST(BStream, input) {
 
 TEST(Bstream, output) {
   std::string filename{"test_bstream_output"};
-
   std::ofstream ofs(filename,
                     std::ios::out | std::ios::trunc | std::ios::binary);
-
   BinaryOutputStream bos(ofs);
-
-  // 0x90, 0xab, 0x08, 0x00, 0x4e, 0xdb, 0x40,
   bos.PutChar(0x58);
   bos.PutChar(0xab);
   bos.PutChar(0x08);
@@ -55,16 +51,12 @@ TEST(Bstream, output) {
   bos.PutChar(0xdb);
   bos.PutChar(0x40);
   bos.PutInt(0x58400276);
-
   ofs.close();
-
   unsigned char val[11];
   std::ifstream ifs(filename, std::ios::in | std::ios::binary);
   ifs.read(reinterpret_cast<char *>(val), sizeof(val));
   ifs.close();
-
   std::remove(filename.c_str());
-
   EXPECT_EQ(val[0], 0x58);
   EXPECT_EQ(val[1], 0xab);
   EXPECT_EQ(val[2], 0x08);
@@ -80,23 +72,16 @@ TEST(Bstream, output) {
 
 TEST(BStream, input2) {
   std::string filename{"test_bstream_input"};
-
   std::ofstream ofs(filename,
                     std::ios::out | std::ios::trunc | std::ios::binary);
   BinaryOutputStream bos(ofs);
   bos.PutChar(0x58);
   ofs.close();
-
-  // Read it back in binary format
   std::ifstream ifs(filename, std::ios::in | std::ios::binary);
   BinaryInputStream bis(ifs);
-
-  // Make sure that we reading the binary in the correct order
   EXPECT_EQ(bis.GetChar(), 0x58);
   EXPECT_THROW(bis.GetBit(), std::exception);
-
   ifs.close();
-
   std::remove(filename.c_str());
 }
 

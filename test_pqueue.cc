@@ -126,9 +126,7 @@ TEST(PQueue, custom_class_for_max_heap) {
 }
 
 struct MyClassPtr {
-  bool operator()(MyClass *r, MyClass *s) const {
-    return r->n() < s->n();
-  }
+  bool operator()(MyClass *r, MyClass *s) const { return r->n() < s->n(); }
 };
 
 TEST(PQueue, custom_class_pointer) {
