@@ -125,6 +125,7 @@ TEST(PQueue, custom_class_for_max_heap) {
   EXPECT_EQ(pq.Top().n(), vec[2].n());
 }
 
+// struct that compares the actual value of the object by dereferrencing
 struct MyClassPtr {
   bool operator()(MyClass *r, MyClass *s) const { return r->n() < s->n(); }
 };
