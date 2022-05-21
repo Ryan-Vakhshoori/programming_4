@@ -70,7 +70,7 @@ TEST(Bstream, output) {
   EXPECT_EQ(val[10], 0x76);
 }
 
-TEST(BStream, input2) {
+TEST(BStream, out_of_bounds) {
   std::string filename{"test_bstream_input"};
   std::ofstream ofs(filename,
                     std::ios::out | std::ios::trunc | std::ios::binary);
@@ -82,7 +82,6 @@ TEST(BStream, input2) {
   EXPECT_EQ(bis.GetChar(), 0x58);
   EXPECT_THROW(bis.GetBit(), std::exception);
   ifs.close();
-  std::remove(filename.c_str());
 }
 
 int main(int argc, char *argv[]) {
