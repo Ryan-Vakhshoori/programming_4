@@ -45,19 +45,24 @@ class PQueue {
 
 // To be completed below
 
+
 #endif  // PQUEUE_H_
 
+// returns size of priority queue
 template <typename T, typename C>
 size_t PQueue<T, C>::Size() {
   return cur_size;
 }
 
+// returns top of priority queue by getting the index of the root
 template <typename T, typename C>
 T& PQueue<T, C>::Top() {
   assert(cur_size > 0);
   return items[Root()];
 }
 
+// pops top of priority queue by adding the last item to the root 
+// performs percolate down with the next root to maintain heap property
 template <typename T, typename C>
 void PQueue<T, C>::Pop() {
   assert(cur_size > 0);
@@ -66,12 +71,18 @@ void PQueue<T, C>::Pop() {
   cur_size--;
   PercolateDown(Root());
 }
+
+// inserts item into priority queue by adding to the end of heap
+// performs percolate up with the new item to maintain heap property
 template <typename T, typename C>
 void PQueue<T, C>::Push(const T& item) {
   items.push_back(item);
   PercolateUp(cur_size);
   cur_size++;
 }
+
+// moves item up heap by swapping with parent if order is violated
+// used CompareNodes to determine if order is violated
 template <typename T, typename C>
 void PQueue<T, C>::PercolateUp(size_t n) {
   while (HasParent(n) && CompareNodes(Parent(n), n)) {
@@ -79,6 +90,10 @@ void PQueue<T, C>::PercolateUp(size_t n) {
     n = Parent(n);
   }
 }
+
+// moves item down heap by swapping with child if order is violated
+/* checks whether to swap with left or right child 
+   and then determines if order is violated */
 template <typename T, typename C>
 void PQueue<T, C>::PercolateDown(size_t n) {
   while (IsNode(LeftChild(n))) {
@@ -95,6 +110,7 @@ void PQueue<T, C>::PercolateDown(size_t n) {
   }
 }
 
+// compares two nodes to determine if order is violated
 template <typename T, typename C>
 bool PQueue<T, C>::CompareNodes(size_t i, size_t j) {
   if (cmp(items[i], items[j])) {
